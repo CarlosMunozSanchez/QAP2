@@ -149,7 +149,7 @@ void mostrarVector(const vector<int> & v){
 
 int evaluarSolucion(const vector<int> & permutacion,    
         const vector<vector<int>> & flujos, const vector<vector<int>> & distancias, 
-        float & fitness ){
+        float & fitness){
     int sol = 0;
     
     for(int i = 0; i < permutacion.size(); i++){
