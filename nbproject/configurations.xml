@@ -7,6 +7,7 @@
       <itemPath>src/AGE.h</itemPath>
       <itemPath>src/AGG.h</itemPath>
       <itemPath>src/AM.h</itemPath>
+      <itemPath>src/funciones.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -18,6 +19,7 @@
       <itemPath>src/AGE.cpp</itemPath>
       <itemPath>src/AGG.cpp</itemPath>
       <itemPath>src/AM.cpp</itemPath>
+      <itemPath>src/funciones.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -32,6 +34,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>src</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -53,6 +58,10 @@
       <item path="src/AM.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/AM.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/funciones.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/funciones.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -88,6 +97,10 @@
       <item path="src/AM.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/AM.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/funciones.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/funciones.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>

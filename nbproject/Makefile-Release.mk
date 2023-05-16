@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/AGE.o \
 	${OBJECTDIR}/src/AGG.o \
 	${OBJECTDIR}/src/AM.o \
+	${OBJECTDIR}/src/funciones.o \
 	${OBJECTDIR}/src/main.o
 
 
@@ -79,6 +80,11 @@ ${OBJECTDIR}/src/AM.o: src/AM.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AM.o src/AM.cpp
+
+${OBJECTDIR}/src/funciones.o: src/funciones.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/funciones.o src/funciones.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
