@@ -24,7 +24,7 @@ private:
     const int ESPERANZA_MUTACION = ESPERANZA_CRUCES * POBLACION_SIZE;
     
     int tipo; //0 -> posicion 1 -> PMX
-    int mejor_solucion; //indice de la mejor solución
+    std::vector<int> mejor_solucion; //indice de la mejor solución
     int coste_mejor;
     
     std::vector<std::vector<int>> poblacion;
@@ -37,13 +37,14 @@ private:
 
     //creo sets para tener a los mejores padres ordenados por su fitness
     //y con su indice asociado en el array poblacion
+    
+    //En este set, tengo los índices ordenados por posición
     std::set<int> mejoresPadres;
+    //en este multimap, tengo los fitness ordenados de mejor a peor, con su indice asociado
     std::multimap<int, int> fitnessMejoresPadres;
-    
-    std::vector<int> seleccion(std::vector<int> & c1, std::vector<int> & c2);
-    
-    std::pair<std::vector<int>, std::vector<int>> cruce(std::vector<int> & c1, 
-        std::vector<int> & c2, int tipo);
+        
+    std::pair<std::vector<int>, std::vector<int>> cruce(const std::vector<int> & c1, 
+        const std::vector<int> & c2, int tipo);
     
     void mutacion(std::vector<int> & cromosoma);
     
@@ -54,7 +55,9 @@ public:
     AGG(int tipo, int n_genes, const std::vector<std::vector<int>> & flujos, 
             const std::vector<std::vector<int>> & distancias, int seed = 42);
     
-    
+    inline std::vector<int> getSolucion(){
+        return mejor_solucion;
+    }
 
     
 

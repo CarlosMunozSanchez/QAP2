@@ -8,6 +8,7 @@
 #include "AGG.h"
 #include "random.hpp"
 #include "funciones.h"
+#include <unordered_map>
 // get base random alias which is auto seeded and has static API and internal state
 // it is not threads secure, you can also use ::random_thread_local
 using Random = effolkronium::random_static;
@@ -43,12 +44,116 @@ AGG::AGG(int tipo, int n_genes, const vector<vector<int>> & flujos,
     
 }
     
-vector<int> AGG::seleccion(vector<int> & c1, vector<int> & c2){}
+pair<vector<int>, vector<int>> AGG::cruce(const vector<int> & c1, 
+    const vector<int> & c2, int tipo){
     
-pair<vector<int>, vector<int>> AGG::cruce(vector<int> & c1, 
-    vector<int> & c2, int tipo){}
+    pair<vector<int>, vector<int>> hijos;
 
-void AGG::mutacion(vector<int> & cromosoma){}
+    switch (tipo){    
+        case 0:{ //cruce posición
+            vector<int> aux;
+            aux.resize(c1.size());
+            vector<int> noIguales;
+            
+            //comparo los dos cromosomas
+            for(int i = 0; i < c1.size(); i++){
+                //si la asignación coincide, la guardo
+                if(c1[i] == c2[i]){
+                    aux[i] = c1[i];
+                }
+                //Marco con -1 si la posición si no coincide
+                else{
+                    aux[i] = -1;
+                    noIguales.push_back(i);
+                }
+            }
+            //los dos hijos tienen las posiciones cuya asignación es igual
+            hijos.first = hijos.second = aux;
+            
+            //ahora, mezclo aleatoriamente los indices que no eran iguales
+            aux = noIguales;
+            Random::shuffle(aux);
+            Random::shuffle(noIguales);
+            
+            //Último paso: asignar estos índices a las posiciones marcadas con -1
+            int j = 0;
+            for(int i = 0; i < hijos.first.size() and j < aux.size(); i++){
+                if(hijos.first[i] != -1){
+                    hijos.first[i] = aux[j];
+                    hijos.second[i] = noIguales[j];
+                    j++;
+                }
+            }    
+        }
+        break;
+        
+        case 1:{ //cruce PMX
+            hijos.first.resize(c1.size());
+            hijos.second.resize(c1.size());
+            
+            //tamaño de la subcadena central
+            int n = c1.size() / 3;
+            
+            //Estructuras para almacenar las correspondencias
+            unordered_map<int, int> corr1_2;
+            unordered_map<int, int> corr2_1;            
+            
+            //copio la cadena central
+            for(int i = n; i < 2*n; i++){
+                hijos.first[i] = c2[i];
+                hijos.second[i] = c1[i];
+                
+                corr1_2.insert(pair<int, int>(c1[i], c2[i]));
+                corr2_1.insert(pair<int, int>(c2[i], c1[i]));
+                     
+            
+            }
+            
+            //Asigno el resto de posiciones siguiendo las correspondencias
+            for(int i = 0; i < c1.size(); i++){
+                //Si no puedo usar la asignación del padre, uso la correspondencia
+                if(corr2_1.count(c1[i]) > 0){
+                    hijos.first[i] = corr2_1.find(c1[i])->second;
+                }
+                else{
+                    hijos.first[i] = c1[i];
+                }
+                
+                //Si no puedo usar la asignación del padre, uso la correspondencia
+                if(corr1_2.count(c2[i]) > 0){
+                    hijos.second[i] = corr1_2.find(c2[i])->second;
+                }
+                else{
+                    hijos.second[i] = c2[i];
+                }
+                
+                //me salto la subcadena central, que ya la tengo asignada
+                if(i == n-1)
+                    i += n;
+                
+            }
+        }        
+        break;
+    }
+    
+    return hijos;
+}
+
+void AGG::mutacion(vector<int> & cromosoma){
+    //Obtengo dos números aleatorios distintos
+    int g1 = Random::get(0, (int)cromosoma.size());
+    int g2;
+    
+    do{
+        g2 = Random::get(0, (int)cromosoma.size());
+    }while(g1 == g2);
+    
+    //Permuto estas asignaciones
+    int aux = cromosoma[g1];
+    cromosoma[g1] = cromosoma[g2];
+    cromosoma[g2] = aux;
+
+}
 
 void AGG::simularEvolucion(const vector<vector<int> >& flujos, 
         const vector<std::vector<int> >& distancias, int tipo){
@@ -194,6 +299,6 @@ void AGG::simularEvolucion(const vector<vector<int> >& flujos,
     }
     
     //Fin de la evolución, escojo la mejor solución
-    mejor_solucion = fitnessMejoresPadres.begin()->second;
+    mejor_solucion = poblacion[fitnessMejoresPadres.begin()->second];
     
 }
