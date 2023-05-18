@@ -9,6 +9,7 @@
 #include "random.hpp"
 #include "funciones.h"
 #include <unordered_map>
+#include <iostream>
 // get base random alias which is auto seeded and has static API and internal state
 // it is not threads secure, you can also use ::random_thread_local
 using Random = effolkronium::random_static;
@@ -78,7 +79,7 @@ pair<vector<int>, vector<int>> AGG::cruce(const vector<int> & c1,
             //Último paso: asignar estos índices a las posiciones marcadas con -1
             int j = 0;
             for(int i = 0; i < hijos.first.size() and j < aux.size(); i++){
-                if(hijos.first[i] != -1){
+                if(hijos.first[i] == -1){
                     hijos.first[i] = aux[j];
                     hijos.second[i] = noIguales[j];
                     j++;
@@ -105,33 +106,28 @@ pair<vector<int>, vector<int>> AGG::cruce(const vector<int> & c1,
                 
                 corr1_2.insert(pair<int, int>(c1[i], c2[i]));
                 corr2_1.insert(pair<int, int>(c2[i], c1[i]));
-                     
-            
             }
             
             //Asigno el resto de posiciones siguiendo las correspondencias
-            for(int i = 0; i < c1.size(); i++){
-                //Si no puedo usar la asignación del padre, uso la correspondencia
-                if(corr2_1.count(c1[i]) > 0){
-                    hijos.first[i] = corr2_1.find(c1[i])->second;
-                }
-                else{
-                    hijos.first[i] = c1[i];
+            for(int i = 0; i < c1.size(); i++){                
+                //Asigno el elemento que indica el otro padre
+                hijos.first[i] = c1[i];                
+                //Si hay conflictos, los resuelvo con las correspondencias
+                while(corr2_1.count(hijos.first[i]) > 0){
+                    hijos.first[i] = corr2_1.find(hijos.first[i])->second;
                 }
                 
-                //Si no puedo usar la asignación del padre, uso la correspondencia
-                if(corr1_2.count(c2[i]) > 0){
-                    hijos.second[i] = corr1_2.find(c2[i])->second;
-                }
-                else{
-                    hijos.second[i] = c2[i];
+                hijos.second[i] = c2[i];                
+                //Si hay conflictos, los resuelvo con las correspondencias
+                while(corr1_2.count(hijos.second[i]) > 0){
+                    hijos.second[i] = corr1_2.find(hijos.second[i])->second;
                 }
                 
                 //me salto la subcadena central, que ya la tengo asignada
                 if(i == n-1)
                     i += n;
-                
             }
+            
         }        
         break;
     }
@@ -141,11 +137,11 @@ pair<vector<int>, vector<int>> AGG::cruce(const vector<int> & c1,
 
 void AGG::mutacion(vector<int> & cromosoma){
     //Obtengo dos números aleatorios distintos
-    int g1 = Random::get(0, (int)cromosoma.size());
+    int g1 = Random::get(0, (int)cromosoma.size()-1);
     int g2;
     
     do{
-        g2 = Random::get(0, (int)cromosoma.size());
+        g2 = Random::get(0, (int)cromosoma.size()-1);
     }while(g1 == g2);
     
     //Permuto estas asignaciones
@@ -193,7 +189,9 @@ void AGG::simularEvolucion(const vector<vector<int> >& flujos,
                     if(c < (*it).first){
                         mejoresPadres.erase((*it).second);
                         mejoresPadres.insert(i);
+                        fitnessMejoresPadres.erase(it);
                         fitnessMejoresPadres.insert(pair<int, int>(c, i));
+                        
                     }                
                 }                
             }
@@ -202,7 +200,6 @@ void AGG::simularEvolucion(const vector<vector<int> >& flujos,
         //menos los de los mejores padres de la generación anterior, pero eso lo hago al final
             
         // 2. SELECCIÓN
-        
         int listaPadres[ESPERANZA_CRUCES*2];
         
         for(int i = 0; i < ESPERANZA_CRUCES*2; i++){
@@ -216,28 +213,27 @@ void AGG::simularEvolucion(const vector<vector<int> >& flujos,
         }
         
         // 3. CRUCE
-        
         //Aquí guardaré los hijos
         vector<vector<int>> hijos;
         hijos.resize(ESPERANZA_CRUCES*2);
         
+        pair<vector<int>, vector<int>> combinacion;
         for(int i = 0; i < ESPERANZA_CRUCES; i++){
             //obtengo la combinación de cada par de padres
-            pair<vector<int>, vector<int>> combinacion = 
-                        cruce(poblacion[listaPadres[i+i*2]], poblacion[listaPadres[i+i*2+1]], tipo);
+            //pair<vector<int>, vector<int>> combinacion = 
+            //            cruce(poblacion[listaPadres[i*2]], poblacion[listaPadres[i*2+1]], tipo);
+            combinacion = cruce(poblacion[listaPadres[i*2]], poblacion[listaPadres[i*2+1]], tipo);
             
             if(i < ESPERANZA_MUTACION){
                 //para los primeros ESPERANZA_MUTACION padres, muto a sus hijos
                 mutacion(combinacion.first);
                 mutacion(combinacion.second);
             }
-            
-            hijos[i+i*2] = combinacion.first;
-            hijos[i+i*2+1] = combinacion.second;
+            hijos[i*2] = combinacion.first;
+            hijos[i*2+1] = combinacion.second;
         }
         
         // 4. REEMPLAZO
-        
         set<int>::iterator m = mejoresPadres.begin();
         int h = 0;     
         //recorro la poblacion
@@ -249,7 +245,9 @@ void AGG::simularEvolucion(const vector<vector<int> >& flujos,
                     poblacion[i] = hijos[h];
                     h++;
                     //me guardo su fitness
-                     int c = evaluarSolucion(poblacion[i], flujos, distancias, aux);
+                    for(int j = 0; j < poblacion[i].size(); j++){
+                    }
+                    int c = evaluarSolucion(poblacion[i], flujos, distancias, aux);
                     fitnessPoblacion[i] = c;
                     evaluaciones++;
                 }
@@ -263,7 +261,7 @@ void AGG::simularEvolucion(const vector<vector<int> >& flujos,
                 poblacion[i] = hijos[h];
                 h++;
                 //me guardo su fitness
-                 int c = evaluarSolucion(poblacion[i], flujos, distancias, aux);
+                int c = evaluarSolucion(poblacion[i], flujos, distancias, aux);
                 fitnessPoblacion[i] = c;
                 evaluaciones++;
             }
@@ -290,12 +288,13 @@ void AGG::simularEvolucion(const vector<vector<int> >& flujos,
                 if(fitnessPoblacion[i] < (*it).first){
                     mejoresPadres.erase((*it).second);
                     mejoresPadres.insert(i);
+                    fitnessMejoresPadres.erase(it);
                     fitnessMejoresPadres.insert(pair<int, int>(fitnessPoblacion[i], i));
                 }                
             }                
         }
     
-       T++;
+        T++;
     }
     
     //Fin de la evolución, escojo la mejor solución

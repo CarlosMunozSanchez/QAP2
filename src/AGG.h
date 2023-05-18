@@ -18,10 +18,10 @@ private:
     const int MAX_EVAL = 50000;
     const float PCRUCE = 0.7;
     const float PMUTACION = 0.1;
-    //Esta es la cantidad de padres que tengo que obtener y cruzar
+    //Esta es la cantidad de cruces que voy a realizar
     const int ESPERANZA_CRUCES = PCRUCE * POBLACION_SIZE / 2;
     //Esta es la cantidad de padres cuyos hijos sufrirán una mutación
-    const int ESPERANZA_MUTACION = ESPERANZA_CRUCES * POBLACION_SIZE;
+    const int ESPERANZA_MUTACION = ESPERANZA_CRUCES * PMUTACION;
     
     int tipo; //0 -> posicion 1 -> PMX
     std::vector<int> mejor_solucion; //indice de la mejor solución

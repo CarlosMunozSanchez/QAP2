@@ -117,7 +117,7 @@ int leerSolucion(const string & entrada, vector<int> & solucion){
             coste = stoi(cadena);
         }
         else{
-            solucion[i-1] = stoi(cadena);
+            solucion[i-1] = stoi(cadena) - 1;
         }
     }
     
@@ -155,7 +155,7 @@ int evaluarSolucion(const vector<int> & permutacion,
     for(int i = 0; i < permutacion.size(); i++){
         for(int j = 0; j < permutacion.size(); j++){
         
-            sol += flujos[i][j] * distancias[permutacion[i]-1][permutacion[j]-1];        
+            sol += flujos[i][j] * distancias[permutacion[i]][permutacion[j]];        
         }        
     }
     

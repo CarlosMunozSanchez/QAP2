@@ -45,7 +45,7 @@ int main(int argc, char** argv){
     cout << "---------------------------------------------------------------" << endl;
     cout << "Resultados del archivo " << entrada << endl << endl;
     
-    //Greedy
+    //AGG con cruce por posicion
     auto momentoInicio = high_resolution_clock::now();
     AGG generacionalPosicion(0, optimo.size(), flujos, distancias, seed);
     
@@ -62,20 +62,23 @@ int main(int argc, char** argv){
     
     
     cout << "---------------------------------------------------------------" << endl;
-    /*
-    //Búsqueda local
-    momentoInicio = high_resolution_clock::now();
-    QAPBL bl(flujos, distancias, seed);
     
-    solucion = bl.getSolucion();
+    //AGG con cruce PMX
+     momentoInicio = high_resolution_clock::now();
+    AGG generacionalPMX(1, optimo.size(), flujos, distancias, seed);
+    
+    solucion = generacionalPMX.getSolucion();
     momentoFin = high_resolution_clock::now();
     
     fitness = costeOptimo;
-    cout << "Solución búsqueda local con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
+    cout << "Solución AGG con cruce por posicion con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
             " y fitness = " << fitness << endl;    
     mostrarVector(solucion);
     
     tiempo = duration_cast<std::chrono::microseconds>(momentoFin - momentoInicio);
     cout << "Tiempo Pasado (ms): " << tiempo.count() / 1000.0 << endl;
-    */
+    
+    
+    cout << "---------------------------------------------------------------" << endl;
+    
 }
