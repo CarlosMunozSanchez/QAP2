@@ -281,6 +281,7 @@ void AM::simularEvolucion(const vector<vector<int> >& flujos,
                         //actualizo el individuo con los resultados de la búsqueda
                         poblacion[j] = bl.getSolucion();
                         fitnessPoblacion[j] = bl.getCoste();
+                        evaluaciones++;
                     }
                 }
                 break;
@@ -290,7 +291,7 @@ void AM::simularEvolucion(const vector<vector<int> >& flujos,
                     vector<int> indices;
                     int N = POBLACION_SIZE * 0.1;
                     for(int i = 0; i < N; i++){
-                        indices.push_back(Random::get(0, (int)poblacion[0].size()));
+                        indices.push_back(Random::get(0, (int)poblacion[0].size() - 1));
                     }
                     
                     //Aplico la BL en esos individuos
@@ -298,6 +299,7 @@ void AM::simularEvolucion(const vector<vector<int> >& flujos,
                         QAPBL bl(poblacion[indices[i]], flujos, distancias, 42);
                         poblacion[indices[i]] = bl.getSolucion();
                         fitnessPoblacion[indices[i]] = bl.getCoste();
+                        evaluaciones++;
                     }
                     
                 }
@@ -314,6 +316,7 @@ void AM::simularEvolucion(const vector<vector<int> >& flujos,
                         poblacion[it->second] = bl.getSolucion();
                         fitnessPoblacion[it->second] = bl.getCoste();
                         it++;
+                        evaluaciones++;
                     }
                     
                 }

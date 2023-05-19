@@ -48,6 +48,9 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <commandLine>-O2</commandLine>
+        </ccTool>
       </compileType>
       <item path="src/AGE.cpp" ex="false" tool="1" flavor2="0">
       </item>
