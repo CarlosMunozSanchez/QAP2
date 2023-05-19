@@ -65,7 +65,7 @@ pair<vector<int>, vector<int>> AGG::cruce(const vector<int> & c1,
                 //Marco con -1 si la posición si no coincide
                 else{
                     aux[i] = -1;
-                    noIguales.push_back(i);
+                    noIguales.push_back(c1[i]);
                 }
             }
             //los dos hijos tienen las posiciones cuya asignación es igual
