@@ -291,7 +291,7 @@ void AM::simularEvolucion(const vector<vector<int> >& flujos,
                     vector<int> indices;
                     int N = POBLACION_SIZE * 0.1;
                     for(int i = 0; i < N; i++){
-                        indices.push_back(Random::get(0, (int)poblacion[0].size() - 1));
+                        indices.push_back(Random::get(0, POBLACION_SIZE-1));
                     }
                     
                     //Aplico la BL en esos individuos
