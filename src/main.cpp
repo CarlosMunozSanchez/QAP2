@@ -47,7 +47,7 @@ int main(int argc, char** argv){
     
     //AGG con cruce por posicion
     auto momentoInicio = high_resolution_clock::now();
-    AGG generacionalPosicion(0, optimo.size(), flujos, distancias, seed);
+    AM generacionalPosicion(1, 0, optimo.size(), flujos, distancias, seed);
     
     solucion = generacionalPosicion.getSolucion();
     auto momentoFin = high_resolution_clock::now();
@@ -65,7 +65,7 @@ int main(int argc, char** argv){
     
     //AGG con cruce PMX
      momentoInicio = high_resolution_clock::now();
-    AGG generacionalPMX(1, optimo.size(), flujos, distancias, seed);
+    AM generacionalPMX(1, 1, optimo.size(), flujos, distancias, seed);
     
     solucion = generacionalPMX.getSolucion();
     momentoFin = high_resolution_clock::now();
