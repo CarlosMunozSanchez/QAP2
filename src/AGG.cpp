@@ -19,7 +19,6 @@ AGG::AGG(int tipo, int n_genes, const vector<vector<int>> & flujos,
         const vector<vector<int>> & distancias, int seed) {
     
     this->tipo = tipo;
-    coste_mejor = 999999999;
     
     poblacion.resize(POBLACION_SIZE);
     fitnessPoblacion.resize(POBLACION_SIZE);
@@ -104,6 +103,7 @@ pair<vector<int>, vector<int>> AGG::cruce(const vector<int> & c1,
                 hijos.first[i] = c2[i];
                 hijos.second[i] = c1[i];
                 
+                //almaceno las correspondencias
                 corr1_2.insert(pair<int, int>(c1[i], c2[i]));
                 corr2_1.insert(pair<int, int>(c2[i], c1[i]));
             }

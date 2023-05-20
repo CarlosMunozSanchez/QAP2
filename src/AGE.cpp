@@ -19,7 +19,6 @@ AGE::AGE(int tipo, int n_genes, const vector<vector<int>> & flujos,
         const vector<vector<int>> & distancias, int seed) {
     
     this->tipo = tipo;
-    coste_mejor = 999999999;
     
     poblacion.resize(POBLACION_SIZE);
     fitnessPoblacion.resize(POBLACION_SIZE);

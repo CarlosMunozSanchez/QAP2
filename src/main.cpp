@@ -70,7 +70,7 @@ int main(int argc, char** argv){
     momentoFin = high_resolution_clock::now();
     
     fitness = costeOptimo;
-    cout << "Solución AGG con cruce PMX " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
+    cout << "Solución AGG con cruce PMX con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
             " y fitness = " << fitness << endl;    
     mostrarVector(solucion);
     
@@ -87,7 +87,7 @@ int main(int argc, char** argv){
     momentoFin = high_resolution_clock::now();
     
     fitness = costeOptimo;
-    cout << "Solución AGE con cruce por posición " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
+    cout << "Solución AGE con cruce por posición con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
             " y fitness = " << fitness << endl;    
     mostrarVector(solucion);
     
@@ -104,7 +104,7 @@ int main(int argc, char** argv){
     momentoFin = high_resolution_clock::now();
     
     fitness = costeOptimo;
-    cout << "Solución AGE con cruce PMX " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
+    cout << "Solución AGE con cruce PMX con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
             " y fitness = " << fitness << endl;    
     mostrarVector(solucion);
     
@@ -121,7 +121,7 @@ int main(int argc, char** argv){
     momentoFin = high_resolution_clock::now();
     
     fitness = costeOptimo;
-    cout << "Solución AM con hibridación 10, 1 " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
+    cout << "Solución AM con hibridación 10, 1 con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
             " y fitness = " << fitness << endl;    
     mostrarVector(solucion);
     
@@ -138,7 +138,7 @@ int main(int argc, char** argv){
     momentoFin = high_resolution_clock::now();
     
     fitness = costeOptimo;
-    cout << "Solución AM con hibridación 10, 0.1 " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
+    cout << "Solución AM con hibridación 10, 0.1 con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
             " y fitness = " << fitness << endl;    
     mostrarVector(solucion);
     
@@ -155,7 +155,7 @@ int main(int argc, char** argv){
     momentoFin = high_resolution_clock::now();
     
     fitness = costeOptimo;
-    cout << "Solución AM con hibridación 10, mej0.1 " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
+    cout << "Solución AM con hibridación 10, mej0.1 con coste " << evaluarSolucion(solucion, flujos, distancias, fitness) <<
             " y fitness = " << fitness << endl;    
     mostrarVector(solucion);
     
